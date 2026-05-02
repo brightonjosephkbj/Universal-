@@ -34,7 +34,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   plugins: [
     'expo-router',
     'expo-av',
-    'expo-haptics',
     [
       'expo-build-properties',
       {
@@ -48,7 +47,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ],
   extra: {
     eas: {
-      projectId: 'your-eas-project-id-here',
+      projectId: '',
     },
   },
 });
