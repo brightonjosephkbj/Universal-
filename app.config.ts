@@ -3,7 +3,7 @@ import { ExpoConfig, ConfigContext } from 'expo/config';
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: 'Universal',
-  slug: 'universal-downloader',
+  slug: 'universal-',
   version: '2.0.0',
   orientation: 'portrait',
   icon: './assets/images/icon.png',
@@ -47,7 +47,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ],
   extra: {
     eas: {
-      projectId: '',
+      projectId: '253e098e-cd88-4f29-8b63-728286da9b59',
     },
   },
 });
