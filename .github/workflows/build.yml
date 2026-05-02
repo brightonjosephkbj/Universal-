@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout
@@ -16,22 +16,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 18
 
       - name: Setup Java 17
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
-
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Accept licenses
-        run: yes | sdkmanager --licenses || true
-
-      - name: Install NDK
-        run: sdkmanager "ndk;26.1.10909125"
 
       - name: Install dependencies
         run: npm ci
@@ -42,13 +33,21 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x android/gradlew
 
-      - name: Upgrade Gradle to 8.6
-        run: sed -i 's|distributions/gradle-.*-all.zip|distributions/gradle-8.6-all.zip|' android/gradle/wrapper/gradle-wrapper.properties
+      - name: Set Gradle 7.6.3
+        run: |
+          sed -i 's|distributions/gradle-.*\.zip|distributions/gradle-7.6.3-all.zip|' android/gradle/wrapper/gradle-wrapper.properties
+
+      - name: Set Android SDK path
+        run: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > android/local.properties
+
+      - name: Accept licenses
+        run: yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
       - name: Build Debug APK
         run: |
           cd android
-          ./gradlew assembleDebug --no-daemon
+          ./gradlew assembleDebug --no-daemon --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
