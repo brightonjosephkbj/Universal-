@@ -39,19 +39,11 @@ jobs:
       - name: Prebuild Android
         run: ./node_modules/.bin/expo prebuild --platform android --no-install
 
-      - name: Fix Gradle Java compatibility
-        run: |
-          echo "org.gradle.jvmargs=-Xmx4g" >> android/gradle.properties
-          echo "android.useAndroidX=true" >> android/gradle.properties
-          echo "android.enableJetifier=true" >> android/gradle.properties
-
       - name: Make gradlew executable
         run: chmod +x android/gradlew
 
-      - name: Upgrade Gradle wrapper to 8.6
-        run: |
-          cd android
-          sed -i 's/gradle-7.6.3-all/gradle-8.6-all/' gradle/wrapper/gradle-wrapper.properties
+      - name: Upgrade Gradle to 8.6
+        run: sed -i 's|distributions/gradle-.*-all.zip|distributions/gradle-8.6-all.zip|' android/gradle/wrapper/gradle-wrapper.properties
 
       - name: Build Debug APK
         run: |
